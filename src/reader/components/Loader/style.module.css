@@ -1,0 +1,29 @@
+.loader {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 100px;
+  height: 100px;
+  background-color: transparent;
+  border: 1px dotted blue;
+  display: flex;
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+/* .loader::after { */
+/*   content: ""; */
+/*   position: absolute; */
+/*   top: 50%; */
+/*   left: 50%; */
+/*   width: 25px; */
+/*   height: 25px; */
+/*   background-color: transparent; */
+/*   display: flex; */
+/*   border-radius: 50%; */
+/*   justify-content: center; */
+/*   align-items: center; */
+/*   z-index: 100; */
+/* } */

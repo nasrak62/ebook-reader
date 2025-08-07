@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "EPUB Reader",
+  "version": "1.0",
+  "description": "Custom EPUB reader with React and Vite",
+  "permissions": ["storage", "tabs", "identity"],
+  "host_permissions": ["https://www.googleapis.com/"],
+  "oauth2": {
+    "client_id": "992052186008-gi2bmej81ijionk19uf996ftlto3le1u.apps.googleusercontent.com",
+    "scopes": ["https://www.googleapis.com/auth/drive.appdata"]
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "index.html",
+    "default_icon": "icon.png"
+  },
+  "icons": {
+    "48": "icon.png"
+  }
+}
