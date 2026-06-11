@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>EPUB &amp; Manga Reader</title>
+    <meta
+      name="description"
+      content="Read EPUB books and manga in your browser with light, dark and sepia themes and reading progress synced across devices."
+    />
+    <style>
+      :root {
+        --bg: #14121c;
+        --bg-elevated: #1d1a29;
+        --border: #322d44;
+        --text: #e9e7f0;
+        --muted: #a39fb5;
+        --accent: #6366f1;
+        --accent-hover: #7c7ef4;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family:
+          system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial,
+          sans-serif;
+        line-height: 1.6;
+        color: var(--text);
+        background: var(--bg);
+      }
+      main {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 64px 24px 96px;
+      }
+      .hero {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 8px;
+      }
+      .hero img {
+        width: 72px;
+        height: 72px;
+        border-radius: 16px;
+      }
+      h1 {
+        margin: 0;
+        font-size: 32px;
+      }
+      .tagline {
+        color: var(--muted);
+        font-size: 18px;
+        margin: 4px 0 32px;
+      }
+      h2 {
+        margin: 40px 0 12px;
+        font-size: 20px;
+      }
+      ul {
+        padding-left: 20px;
+      }
+      li {
+        margin: 8px 0;
+      }
+      a {
+        color: var(--accent-hover);
+      }
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 16px;
+      }
+      .btn {
+        display: inline-block;
+        padding: 10px 18px;
+        border-radius: 8px;
+        font-weight: 600;
+        text-decoration: none;
+        background: var(--accent);
+        color: #fff;
+      }
+      .btn:hover {
+        background: var(--accent-hover);
+      }
+      .btn.secondary {
+        background: transparent;
+        border: 1px solid var(--border);
+        color: var(--text);
+      }
+      footer {
+        margin-top: 56px;
+        padding-top: 24px;
+        border-top: 1px solid var(--border);
+        color: var(--muted);
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="hero">
+        <img
+          src="https://raw.githubusercontent.com/nasrak62/ebook-reader/master/public/icon.png"
+          alt="EPUB & Manga Reader icon"
+        />
+        <h1>EPUB &amp; Manga Reader</h1>
+      </div>
+      <p class="tagline">
+        Read EPUB books and manga in your browser — with light, dark and sepia
+        themes and reading progress synced across your devices.
+      </p>
+
+      <div class="actions">
+        <a class="btn secondary" href="https://github.com/nasrak62/ebook-reader"
+          >View on GitHub</a
+        >
+        <a class="btn secondary" href="./privacy.html">Privacy Policy</a>
+      </div>
+
+      <h2>Features</h2>
+      <ul>
+        <li>Read EPUB books and manga directly in your browser.</li>
+        <li>
+          Light, dark and sepia reading themes for comfortable reading, with a
+          consistent, clean layout across books.
+        </li>
+        <li>
+          Efficient streaming and caching, built to handle very large EPUB
+          files without consuming excessive memory.
+        </li>
+        <li>
+          Reading progress (chapter and page) is saved and synced across your
+          devices via your own Google Drive.
+        </li>
+        <li>
+          Files are read locally from your computer — your books never leave
+          your device.
+        </li>
+      </ul>
+
+      <h2>Privacy</h2>
+      <p>
+        This extension does not collect personal information. The only data it
+        handles is your reading progress, stored privately in your own Google
+        Drive app-data folder. Read the full
+        <a href="./privacy.html">Privacy Policy</a>.
+      </p>
+
+      <footer>
+        Questions? Contact
+        <a href="mailto:nasrak62@gmail.com">nasrak62@gmail.com</a>.
+      </footer>
+    </main>
+  </body>
+</html>
