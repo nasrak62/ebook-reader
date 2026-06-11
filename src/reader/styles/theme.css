@@ -1,0 +1,69 @@
+:root {
+  /* ----- App chrome (dark) ----- */
+  --app-bg: #14121c;
+  --app-bg-elevated: #1d1a29;
+  --app-bg-hover: #2a2638;
+  --app-border: #322d44;
+  --app-text: #e9e7f0;
+  --app-text-muted: #a39fb5;
+
+  --accent: #6366f1;
+  --accent-hover: #7c7ef4;
+  --accent-contrast: #ffffff;
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.45);
+
+  /* ----- Spacing scale ----- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+
+  /* ----- Radius ----- */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-full: 999px;
+
+  /* ----- Controls ----- */
+  --control-size: 36px;
+
+  /* ----- Reader content (default = light reading theme) ----- */
+  --reader-bg: #ffffff;
+  --reader-text: #1a1a1a;
+  --reader-text-muted: #555555;
+  --reader-link: #2c5fd6;
+  --reader-border: #e2e2e2;
+  --reader-font:
+    Georgia, Cambria, "Times New Roman", "Noto Serif", serif;
+  --reader-font-size: 18px;
+  --reader-line-height: 1.65;
+  --reader-max-width: 42rem;
+}
+
+/* ===== Reading themes (re-theme only the --reader-* vars) ===== */
+[data-reader-theme="light"] {
+  --reader-bg: #ffffff;
+  --reader-text: #1a1a1a;
+  --reader-text-muted: #555555;
+  --reader-link: #2c5fd6;
+  --reader-border: #e2e2e2;
+}
+
+[data-reader-theme="dark"] {
+  --reader-bg: #16161a;
+  --reader-text: #d8d6dc;
+  --reader-text-muted: #9a98a3;
+  --reader-link: #8ab4f8;
+  --reader-border: #2c2c33;
+}
+
+[data-reader-theme="sepia"] {
+  --reader-bg: #f4ecd8;
+  --reader-text: #45402f;
+  --reader-text-muted: #6b6450;
+  --reader-link: #8a5a2b;
+  --reader-border: #ddd2b6;
+}

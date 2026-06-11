@@ -12,8 +12,6 @@ export const handleGetPageData = async (
 ) => {
   const chpaterId = selectedChapterData?.id;
 
-  console.log({ chpaterId, manager, element });
-
   if (!chpaterId || !manager || !element || !selectedChapterData) {
     return;
   }
@@ -32,7 +30,7 @@ export const handleGetPageData = async (
 
   const chaptersData = [selectedChapterData];
 
-  if (chapterIndex - 1 > 0) {
+  if (chapterIndex - 1 >= 0) {
     chaptersData.push(dataMap.chaptersData[chapterIndex - 1]);
   }
 

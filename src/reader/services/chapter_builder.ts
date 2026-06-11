@@ -2,12 +2,18 @@ import type { TChapterCacheResult, TChapterData } from "@reader/types";
 import PageBuilder from "./page_builder";
 import type { Entry } from "@zip.js/zip.js";
 
+export type TBuiltChapter = {
+  cacheData: TChapterCacheResult;
+  blobUrls: string[];
+};
+
 export default class ChapterBuilder {
   static async build(
     chapterData: TChapterData,
     imagesMap: Record<string, Entry>,
-  ): Promise<TChapterCacheResult> {
+  ): Promise<TBuiltChapter> {
     const cacheData: TChapterCacheResult = {};
+    const blobUrls: string[] = [];
     const pages = chapterData.pages;
     const tasks = pages.map((page) => {
       return PageBuilder.build(page.xhtmlEntry, imagesMap);
@@ -22,9 +28,13 @@ export default class ChapterBuilder {
         return;
       }
 
-      cacheData[page.pageNumber] = item;
+      cacheData[page.pageNumber] = item?.html;
+
+      if (item?.blobUrls?.length) {
+        blobUrls.push(...item.blobUrls);
+      }
     });
 
-    return cacheData;
+    return { cacheData, blobUrls };
   }
 }

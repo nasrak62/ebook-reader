@@ -19,8 +19,6 @@ export default class DriveCommunicationManager {
     message: TMessageData,
     sendResponse: (response?: unknown) => void,
   ) {
-    console.log({ action: message.action });
-
     if (message.action === COMMUNICATION_MESSAGES.GOOGLE_SIGNIN) {
       handleGoogleSignIn(sendResponse);
 

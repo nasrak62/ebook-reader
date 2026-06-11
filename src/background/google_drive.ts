@@ -67,8 +67,53 @@ export default class GoogleDrive {
     }
   }
 
-  static async updateSyncFile(token: string, fileId: string, data: TSyncData) {
+  /**
+   * Read the current remote sync data plus its HTTP ETag so we can merge
+   * other devices' progress instead of blindly overwriting it.
+   */
+  static async readSyncFileWithEtag(
+    token: string,
+    fileId: string,
+  ): Promise<{ data: TSyncData; etag: string | null }> {
+    const url = new URL(`https://www.googleapis.com/drive/v3/files/${fileId}`);
+
+    url.searchParams.append("alt", "media");
+
+    const headers = GoogleDrive.createHeaders({ token, isJson: true });
+    const response = await fetch(url.toString(), { method: "GET", headers });
+
+    if (!response.ok) {
+      return { data: {}, etag: null };
+    }
+
+    const etag = response.headers.get("ETag");
+
+    let data: TSyncData = {};
+
     try {
+      data = (await response.json()) as TSyncData;
+    } catch {
+      data = {};
+    }
+
+    return { data: data || {}, etag };
+  }
+
+  static async updateSyncFile(
+    token: string,
+    fileId: string,
+    data: TSyncData,
+    allowRetry = true,
+  ): Promise<unknown> {
+    try {
+      // Merge with the latest remote: local progress wins per book, but books
+      // only present on another device are preserved.
+      const { data: remoteData, etag } = await GoogleDrive.readSyncFileWithEtag(
+        token,
+        fileId,
+      );
+      const mergedData: TSyncData = { ...remoteData, ...data };
+
       const fileMetadata = {
         mimeType: MIME_TYPE,
       };
@@ -82,7 +127,7 @@ export default class GoogleDrive {
 
       form.append(
         "file",
-        new Blob([JSON.stringify(data)], { type: MIME_TYPE }),
+        new Blob([JSON.stringify(mergedData)], { type: MIME_TYPE }),
       );
 
       const url = new URL(
@@ -93,11 +138,20 @@ export default class GoogleDrive {
 
       const headers = GoogleDrive.createHeaders({ token });
 
+      if (etag) {
+        headers["If-Match"] = etag;
+      }
+
       const response = await fetch(url.toString(), {
         method: "PATCH",
         headers,
         body: form,
       });
+
+      // Lost the optimistic-concurrency race: re-read and retry once.
+      if (response.status === 412 && allowRetry) {
+        return GoogleDrive.updateSyncFile(token, fileId, data, false);
+      }
 
       return await response.json();
     } catch (error) {
