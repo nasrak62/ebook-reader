@@ -8,9 +8,11 @@ import ChapterBuilder from "./chapter_builder";
 
 export default class ChapterManager {
   chaptersCache: TChaptersCache;
+  blobUrlsByChapter: Record<string, string[]>;
 
   constructor() {
     this.chaptersCache = {};
+    this.blobUrlsByChapter = {};
   }
 
   getCachedChapter(chapterId: string): TChapterCacheResult | null {
@@ -22,8 +24,29 @@ export default class ChapterManager {
   }
 
   deleteCacheKey(key: string) {
+    this.revokeChapter(key);
+
     if (this.chaptersCache?.[key] !== undefined) {
       delete this.chaptersCache[key];
+    }
+  }
+
+  /** Revoke every blob URL created for a chapter so images don't leak. */
+  revokeChapter(key: string) {
+    const urls = this.blobUrlsByChapter?.[key];
+
+    if (urls) {
+      for (const url of urls) {
+        URL.revokeObjectURL(url);
+      }
+
+      delete this.blobUrlsByChapter[key];
+    }
+  }
+
+  revokeAll() {
+    for (const key of Object.keys(this.blobUrlsByChapter)) {
+      this.revokeChapter(key);
     }
   }
 
@@ -57,7 +80,8 @@ export default class ChapterManager {
       const chapter = chaptersToFetch[index];
 
       if (chapter) {
-        this.chaptersCache[chapter.id] = item;
+        this.chaptersCache[chapter.id] = item.cacheData;
+        this.blobUrlsByChapter[chapter.id] = item.blobUrls;
       }
     });
   }

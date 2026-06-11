@@ -1,78 +1,228 @@
 .container {
   display: flex;
   flex-direction: column;
-  align-items: center;
   overflow: hidden;
   width: 100%;
   height: 100%;
+  background-color: var(--app-bg);
 }
 
-.content {
-  overflow: auto;
+/* ===== Toolbar ===== */
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
   width: 100%;
-  height: 100%;
-  background-color: #ffffff;
-
-  p,
-  span,
-  div {
-    font-size: 16px;
-    color: #000000;
-    box-sizing: border-box;
-  }
-
-  h1 {
-    font-size: 32px;
-    text-align: center;
-  }
-
-  ul,
-  ol {
-    text-decoration: none;
-    list-style: none;
-  }
-
-  div {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    box-sizing: border-box;
-  }
-
-  p,
-  ul,
-  ol {
-    margin-top: 3%;
-    margin-bottom: 3%;
-    padding-left: 3%;
-    padding-right: 3%;
-    box-sizing: border-box;
-  }
-
-  p,
-  ul,
-  span,
-  h1 {
-    width: 100%;
-  }
+  padding: var(--space-2) var(--space-3);
+  background-color: var(--app-bg-elevated);
+  border-bottom: 1px solid var(--app-border);
+  box-sizing: border-box;
 }
 
 .title {
-  text-align: center;
-  color: #ffffff;
-  display: flex;
-  justify-content: center;
-}
-
-.titleContainer {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
-
-.pageButton {
-  background-color: transparent;
-  border: 1px solid #ffffff;
-  padding: 0;
+  flex: 1;
+  min-width: 0;
   margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  text-align: center;
+  color: var(--app-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.iconButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--control-size);
+  height: var(--control-size);
+  padding: 0;
+  background-color: transparent;
+  border: 1px solid var(--app-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.iconButton:hover:not(:disabled) {
+  background-color: var(--app-bg-hover);
+  border-color: var(--accent);
+}
+
+.iconButton:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.iconButton img {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+.select {
+  height: var(--control-size);
+  padding: 0 var(--space-3);
+  font-size: 13px;
+  font-family: inherit;
+  color: var(--app-text);
+  background-color: var(--app-bg);
+  border: 1px solid var(--app-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.select:hover {
+  border-color: var(--accent);
+}
+
+.spacer {
+  width: 1px;
+  height: var(--control-size);
+  background-color: var(--app-border);
+  margin: 0 var(--space-1);
+}
+
+/* ===== Reading surface ===== */
+.contentScroll {
+  flex: 1;
+  width: 100%;
+  overflow: auto;
+  background-color: var(--reader-bg);
+}
+
+.content {
+  max-width: var(--reader-max-width);
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-5);
+  box-sizing: border-box;
+  color: var(--reader-text);
+  font-family: var(--reader-font);
+  font-size: var(--reader-font-size);
+  line-height: var(--reader-line-height);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Normalize the book's own markup to one consistent, readable style. */
+.content :where(p, div, span, li, td, th, blockquote, figcaption) {
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.content p {
+  margin: 0 0 1em;
+  text-align: left;
+}
+
+.content h1,
+.content h2,
+.content h3,
+.content h4,
+.content h5,
+.content h6 {
+  margin: 1.4em 0 0.6em;
+  line-height: 1.25;
+  font-weight: 700;
+  color: var(--reader-text);
+}
+
+.content h1 {
+  font-size: 1.8em;
+}
+.content h2 {
+  font-size: 1.5em;
+}
+.content h3 {
+  font-size: 1.3em;
+}
+.content h4 {
+  font-size: 1.15em;
+}
+.content h5 {
+  font-size: 1em;
+}
+.content h6 {
+  font-size: 0.9em;
+}
+
+.content ul,
+.content ol {
+  margin: 0 0 1em;
+  padding-left: 1.6em;
+}
+
+.content ul {
+  list-style: disc;
+}
+.content ol {
+  list-style: decimal;
+}
+
+.content li {
+  margin: 0.25em 0;
+}
+
+.content a {
+  color: var(--reader-link);
+  text-decoration: underline;
+}
+
+.content blockquote {
+  margin: 1em 0;
+  padding: 0.2em 1em;
+  border-left: 3px solid var(--reader-border);
+  color: var(--reader-text-muted);
+  font-style: italic;
+}
+
+.content hr {
+  border: none;
+  border-top: 1px solid var(--reader-border);
+  margin: 1.5em 0;
+}
+
+.content img,
+.content svg,
+.content image {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1em auto;
+}
+
+.content figure {
+  margin: 1em 0;
+}
+
+.content pre {
+  overflow-x: auto;
+  padding: 0.8em 1em;
+  background-color: var(--reader-border);
+  border-radius: var(--radius-sm);
+  font-size: 0.9em;
+}
+
+.content code {
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  font-size: 0.9em;
+}
+
+.content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1em 0;
+}
+
+.content th,
+.content td {
+  border: 1px solid var(--reader-border);
+  padding: 0.4em 0.6em;
+  text-align: left;
 }

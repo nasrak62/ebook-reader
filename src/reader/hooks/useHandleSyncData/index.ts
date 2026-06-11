@@ -8,6 +8,8 @@ import {
 } from "./utils";
 import type { TChapterData } from "@reader/types";
 
+const SAVE_INTERVAL_MS = 15000;
+
 const useHandleSyncData = (
   epubId: string | null,
   progress: TSyncChapterData | null,
@@ -20,36 +22,19 @@ const useHandleSyncData = (
   const epubIdRef = useRef<string | null>(null);
   const prevProgress = useRef<TSyncChapterData | null>(progress);
 
-  const handleInterval = useCallback(
-    (controller: AbortController) => {
-      console.log({ epubId, progress });
-      if (epubId === null || progress === null) {
-        return;
-      }
+  // Latest values mirrored into refs so the save interval can read them
+  // without being torn down and recreated on every page turn.
+  const progressRef = useRef<TSyncChapterData | null>(progress);
+  const syncDataRef = useRef<TSyncData | null>(syncData);
+  const fileIdRef = useRef<string | null | undefined>(undefined);
 
-      const timeout = setInterval(async () => {
-        const effecitveFileId = await getFileId();
+  useEffect(() => {
+    progressRef.current = progress;
+  }, [progress]);
 
-        await saveCurrentProgress({
-          fileId: effecitveFileId,
-          oldData: syncData || {},
-          epubId,
-          progress,
-        });
-      }, 15000);
-
-      controller.signal.addEventListener(
-        "abort",
-        () => {
-          if (timeout) {
-            clearTimeout(timeout);
-          }
-        },
-        {},
-      );
-    },
-    [epubId, progress, syncData],
-  );
+  useEffect(() => {
+    syncDataRef.current = syncData;
+  }, [syncData]);
 
   const handleSigninWrapper = useCallback(async () => {
     try {
@@ -93,22 +78,43 @@ const useHandleSyncData = (
     }
   }, [syncData, epubId, progress, chapters, setSelectedChapterData]);
 
-  const handleSync = useCallback(async () => {
-    await handleSigninWrapper();
+  useEffect(() => {
+    handleSigninWrapper();
   }, [handleSigninWrapper]);
 
+  // One stable interval per book; reads the latest progress/syncData from refs.
   useEffect(() => {
-    handleSync();
-  }, [handleSync]);
+    if (epubId === null) {
+      return;
+    }
 
-  useEffect(() => {
-    const controller = new AbortController();
-    handleInterval(controller);
+    const intervalId = setInterval(async () => {
+      try {
+        const currentProgress = progressRef.current;
+
+        if (!currentProgress) {
+          return;
+        }
+
+        if (!fileIdRef.current) {
+          fileIdRef.current = (await getFileId()) ?? null;
+        }
+
+        await saveCurrentProgress({
+          fileId: fileIdRef.current ?? null,
+          oldData: syncDataRef.current || {},
+          epubId,
+          progress: currentProgress,
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    }, SAVE_INTERVAL_MS);
 
     return () => {
-      controller.abort();
+      clearInterval(intervalId);
     };
-  }, [handleInterval]);
+  }, [epubId]);
 
   useEffect(() => {
     if (
