@@ -63,12 +63,8 @@ const readSyncFile = async (fileId: string): Promise<TSyncData | null> => {
   const fileData = response.file;
 
   if (!fileData) {
-    console.log("file data is empty, skiping...");
-
     return null;
   }
-
-  console.log({ fileData });
 
   return fileData;
 };

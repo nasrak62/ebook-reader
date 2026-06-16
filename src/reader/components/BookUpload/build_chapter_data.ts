@@ -6,6 +6,7 @@ import type {
 } from "@reader/types";
 import type { Entry } from "@zip.js/zip.js";
 import { v4 as uuidV4 } from "uuid";
+import { buildEntryIndex, resolveEntry } from "./path_utils";
 
 const cleanFileName = (value: string | null | undefined): string => {
   if (!value) {
@@ -48,6 +49,7 @@ export const buildChaptersData = (
   xhtmlMap: Record<string, Entry>,
 ): TChapterData[] => {
   const chaptersData: TChapterData[] = [];
+  const xhtmlIndex = buildEntryIndex(xhtmlMap);
   const flatNavigation = flattenNavigation(navigation);
   const cleanedReadingOrder = readingOrder.map((value) =>
     cleanFileName(value.src),
@@ -87,11 +89,16 @@ export const buildChaptersData = (
       readingIndex++
     ) {
       const src = readingOrder[readingIndex].src;
-      const filePath = `OEBPS/${src}`;
+      const xhtmlEntry = resolveEntry(xhtmlIndex, src);
+
+      if (!xhtmlEntry) {
+        console.error(`can't resolve xhtml entry for "${src}"`);
+        continue;
+      }
 
       const pageData: TPageData = {
         xhtmlName: src,
-        xhtmlEntry: xhtmlMap[filePath],
+        xhtmlEntry,
         pageNumber: pageIndex,
       };
 

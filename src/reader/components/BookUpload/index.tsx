@@ -26,17 +26,6 @@ const BookUpload = ({
 
     setSelectedChapterData(chaptersData?.[0] || null);
 
-    console.log({
-      imagesMap,
-      xhtmlMap,
-      manifestItems,
-      readingOrder,
-      fileHandler,
-      navigation,
-      title,
-      chaptersData,
-    });
-
     const id = `${title}-${chaptersData.length}-${readingOrder.length}`;
 
     setDataMap({
@@ -54,9 +43,27 @@ const BookUpload = ({
 
   return (
     <div className={classes.container}>
-      <h2>EPUB Reader</h2>
-      <input type="file" accept=".epub" onChange={handleFilePick} />
-      {dataMap?.fileHandler && <p>Selected: {dataMap?.fileHandler?.name}</p>}
+      <div className={classes.card}>
+        <h2 className={classes.heading}>EPUB & Manga Reader</h2>
+        <p className={classes.subtitle}>
+          Choose an <code>.epub</code> file to start reading.
+        </p>
+        <input
+          id="epub-file"
+          className={classes.fileInput}
+          type="file"
+          accept=".epub"
+          onChange={handleFilePick}
+        />
+        <label className={classes.fileLabel} htmlFor="epub-file">
+          📁 Choose EPUB file
+        </label>
+        {dataMap?.fileHandler && (
+          <p className={classes.selected}>
+            Selected: {dataMap?.fileHandler?.name}
+          </p>
+        )}
+      </div>
     </div>
   );
 };

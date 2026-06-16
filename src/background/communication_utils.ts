@@ -113,8 +113,6 @@ export const handleCreateDriveFile = async (
   data: TSyncData | null,
 ) => {
   try {
-    console.log({ data });
-
     if (!data) {
       return handleError(sendResponse, "Missing sync data");
     }
@@ -127,7 +125,6 @@ export const handleCreateDriveFile = async (
 
     const file = await GoogleDrive.createSyncFile(token, data);
 
-    console.log({ file });
     sendResponse({ success: true, file });
 
     return true;

@@ -2,6 +2,17 @@ import { BlobReader, ZipReader } from "@zip.js/zip.js";
 import type { Entry } from "@zip.js/zip.js";
 import FileReader from "@reader/services/file_reader";
 
+const IMAGE_EXTENSIONS = [
+  ".png",
+  ".jpg",
+  ".jpeg",
+  ".gif",
+  ".webp",
+  ".avif",
+  ".bmp",
+  ".svg",
+];
+
 export const buildZipMappers = async (fileHandler: File) => {
   const imagesMap: Record<string, Entry> = {};
   const xhtmlMap: Record<string, Entry> = {};
@@ -33,27 +44,26 @@ export const buildZipMappers = async (fileHandler: File) => {
         continue;
       }
 
+      const lowerName = filename.toLowerCase();
+
       if (
-        filename.includes(".png") ||
-        filename.includes(".jpg") ||
-        filename.includes(".jpeg") ||
-        filename.includes(".svg")
+        IMAGE_EXTENSIONS.some((extension) => lowerName.endsWith(extension))
       ) {
         imagesMap[filename] = entryHandler;
         continue;
       }
 
-      if (filename.includes(".xhtml")) {
+      if (lowerName.endsWith(".xhtml") || lowerName.endsWith(".html")) {
         xhtmlMap[filename] = entryHandler;
         continue;
       }
 
-      if (filename.includes(".opf")) {
+      if (lowerName.endsWith(".opf")) {
         opfEntry = entryHandler;
         continue;
       }
 
-      if (filename.includes(".ncx")) {
+      if (lowerName.endsWith(".ncx")) {
         tocEntry = entryHandler;
         continue;
       }

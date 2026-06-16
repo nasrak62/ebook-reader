@@ -1,6 +1,6 @@
 import classes from "./style.module.css";
 import type { TNavigationItemProps } from "./types";
-import { getBorderColor } from "./utils";
+import { getBorderColor, getIndent } from "./utils";
 
 const NavigationItem = ({
   item,
@@ -12,7 +12,8 @@ const NavigationItem = ({
       className={classes.navigationItem}
       onClick={handleSetChapter(item.src, item.playOrder)}
       style={{
-        borderBottomColor: getBorderColor(level),
+        borderLeftColor: getBorderColor(level),
+        paddingLeft: getIndent(level),
       }}
     >
       <span className={classes.text}>

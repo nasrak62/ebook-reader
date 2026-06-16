@@ -1,30 +1,42 @@
 import type { Entry } from "@zip.js/zip.js";
 import BlobReader from "@reader/services/blob_reader";
+import {
+  buildEntryIndex,
+  resolveEntry,
+} from "@reader/components/BookUpload/path_utils";
+
+export type TFixedImagesResult = {
+  html: string;
+  blobUrls: string[];
+};
+
+const XLINK_NS = "http://www.w3.org/1999/xlink";
 
 export const fixHTMLImages = async (
   htmlValue: string,
   imagesMap: Record<string, Entry>,
-): Promise<string> => {
+): Promise<TFixedImagesResult> => {
   const parser = new DOMParser();
   const docValue = parser.parseFromString(htmlValue, "text/html");
-  const imgs = docValue.querySelectorAll("img");
   const blobReader = new BlobReader();
+  const imageIndex = buildEntryIndex(imagesMap);
+  const blobUrls: string[] = [];
+
+  // <img src> plus SVG <image href> / <image xlink:href>
+  const imgs = Array.from(docValue.querySelectorAll("img, image"));
 
   for (const img of imgs) {
-    let src = img.getAttribute("src");
+    const isSvgImage = img.tagName.toLowerCase() === "image";
+    const src =
+      img.getAttribute("src") ||
+      img.getAttribute("href") ||
+      img.getAttributeNS(XLINK_NS, "href");
 
     if (!src) {
       continue;
     }
 
-    if (src.startsWith("/")) {
-      src = src.slice(1);
-    }
-
-    const imageData =
-      imagesMap?.[src] ||
-      imagesMap?.[`OEBPS/${src}`] ||
-      imagesMap?.[src.replace("..", "OEBPS")];
+    const imageData = resolveEntry(imageIndex, src);
 
     if (!imageData) {
       continue;
@@ -37,11 +49,17 @@ export const fixHTMLImages = async (
     }
 
     const blobUrl = URL.createObjectURL(data);
+    blobUrls.push(blobUrl);
 
-    img.setAttribute("src", blobUrl);
+    if (isSvgImage) {
+      img.setAttribute("href", blobUrl);
+      img.setAttributeNS(XLINK_NS, "href", blobUrl);
+    } else {
+      img.setAttribute("src", blobUrl);
+    }
   }
 
   const finalHtml = new XMLSerializer().serializeToString(docValue);
 
-  return finalHtml;
+  return { html: finalHtml, blobUrls };
 };

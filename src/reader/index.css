@@ -7,7 +7,10 @@
 body {
   width: 100vw;
   height: 100vh;
-  background: rgba(30, 0, 50, 1);
+  background: var(--app-bg);
+  color: var(--app-text);
+  font-family:
+    system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   margin: 0 !important;
   padding: 0 !important;
 }

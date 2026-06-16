@@ -1,3 +1,5 @@
+import classes from "./App.module.css";
+
 function App() {
   const openApp = () => {
     chrome.tabs.create({ url: chrome.runtime.getURL("reader.html") });
@@ -5,9 +7,11 @@ function App() {
   };
 
   return (
-    <div style={{ padding: 16 }}>
-      <button onClick={openApp} style={{ padding: "8px 12px" }}>
-        📖 Open EPUB Reader
+    <div className={classes.container}>
+      <h1 className={classes.heading}>EPUB & Manga Reader</h1>
+      <p className={classes.subtitle}>Open the reader in a new tab.</p>
+      <button className={classes.button} onClick={openApp}>
+        📖 Open Reader
       </button>
     </div>
   );
