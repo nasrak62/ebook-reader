@@ -1,3 +1,5 @@
+import "./App.css";
+
 function App() {
   const openApp = () => {
     chrome.tabs.create({ url: chrome.runtime.getURL("reader.html") });
@@ -5,9 +7,12 @@ function App() {
   };
 
   return (
-    <div style={{ padding: 16 }}>
-      <button onClick={openApp} style={{ padding: "8px 12px" }}>
-        📖 Open EPUB Reader
+    <div className="popup">
+      <div className="popupIcon">📖</div>
+      <div className="popupTitle">EPUB &amp; Manga Reader</div>
+      <div className="popupSubtitle">Read your books, beautifully.</div>
+      <button className="popupButton" onClick={openApp}>
+        Open Reader
       </button>
     </div>
   );

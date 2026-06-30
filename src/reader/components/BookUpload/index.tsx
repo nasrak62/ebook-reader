@@ -54,9 +54,25 @@ const BookUpload = ({
 
   return (
     <div className={classes.container}>
-      <h2>EPUB Reader</h2>
-      <input type="file" accept=".epub" onChange={handleFilePick} />
-      {dataMap?.fileHandler && <p>Selected: {dataMap?.fileHandler?.name}</p>}
+      <div className={classes.card}>
+        <div className={classes.icon}>📖</div>
+        <h2 className={classes.heading}>EPUB &amp; Manga Reader</h2>
+        <p className={classes.subtitle}>Open an EPUB file to start reading.</p>
+        <label className={classes.fileButton}>
+          Choose a book
+          <input
+            type="file"
+            accept=".epub"
+            onChange={handleFilePick}
+            className={classes.hiddenInput}
+          />
+        </label>
+        {dataMap?.fileHandler && (
+          <p className={classes.selected}>
+            Selected: {dataMap?.fileHandler?.name}
+          </p>
+        )}
+      </div>
     </div>
   );
 };

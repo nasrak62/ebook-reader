@@ -1,3 +1,27 @@
+:root {
+  /* Claude.ai-inspired warm palette */
+  --bg: #f0eee6;
+  --surface: #faf9f5;
+  --page: #ffffff;
+  --text: #1f1e1d;
+  --text-muted: #6b6862;
+  --border: #e7e4da;
+  --accent: #cc785c;
+  --accent-soft: rgba(204, 120, 92, 0.1);
+  --accent-hover: #b8674d;
+
+  --serif: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia,
+    ui-serif, serif;
+  --sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
+
+  font-family: var(--sans);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
 * {
   padding: 0;
   margin: 0;
@@ -7,7 +31,7 @@
 body {
   width: 100vw;
   height: 100vh;
-  background: rgba(30, 0, 50, 1);
+  background: var(--bg);
   margin: 0 !important;
   padding: 0 !important;
 }
