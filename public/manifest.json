@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "EPUB Reader",
-  "version": "1.0",
-  "description": "Custom EPUB reader with React and Vite",
+  "name": "EPUB & Manga Reader",
+  "version": "1.0.1",
+  "description": "Read EPUB books and manga in your browser, with reading progress synced across devices via Google Drive.",
   "permissions": ["storage", "tabs", "identity"],
   "host_permissions": ["https://www.googleapis.com/"],
   "oauth2": {
